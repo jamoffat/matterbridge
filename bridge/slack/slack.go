@@ -386,10 +386,11 @@ func (b *Bslack) uploadFile(msg *config.Message, channelID string) {
 		b.Log.Debugf("Adding file %s to cache at %s with timestamp", fi.Name, ts.String())
 		b.cache.Add("filename"+fi.Name, ts)
 		res, err := b.sc.UploadFile(slack.FileUploadParameters{
-			Reader:         bytes.NewReader(*fi.Data),
-			Filename:       fi.Name,
-			Channels:       []string{channelID},
-			InitialComment: fi.Comment,
+			Reader:          bytes.NewReader(*fi.Data),
+			Filename:        fi.Name,
+			Channels:        []string{channelID},
+			InitialComment:  fi.Comment,
+			ThreadTimestamp: msg.ParentID,
 		})
 		if err != nil {
 			b.Log.Errorf("uploadfile %#v", err)
